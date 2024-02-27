@@ -1,13 +1,17 @@
 import requests
 from lxml import html
 import re
-def remainingAmountOfData(mobileNo: str, password: str) -> float:
+def remainingAmountOfData(mobileNo: str, password: str, debug=False) -> float:
     session = requests.Session()
     user_agent_header = {
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
     base_header = {}
     base_header.update(user_agent_header)
-    session.get("https://prepaid.hkcsl.com/login", headers=base_header)
+    resp = session.get("https://prepaid.hkcsl.com/login", headers=base_header)
+    if debug:
+        print("Page 1")
+        print(resp.status_code)
+        print(resp.text)
     HEADERS = {
         'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
         "Referer": "https://prepaid.hkcsl.com/login"
@@ -18,10 +22,18 @@ def remainingAmountOfData(mobileNo: str, password: str) -> float:
         "msisdn": mobileNo,
         "password": password
     }
-    session.post("https://prepaid.hkcsl.com/login_add",
+    resp = session.post("https://prepaid.hkcsl.com/login_add",
                  headers=HEADERS
                  , data=data)
+    if debug:
+        print("Login")
+        print(resp.status_code)
+        print(resp.text)
     resp = session.get("https://prepaid.hkcsl.com/usage?lang=EN", headers=base_header)
+    if debug:
+        print("Page2")
+        print(resp.status_code)
+        print(resp.text)
 
     rHtml = resp.text
     tree = html.fromstring(rHtml)

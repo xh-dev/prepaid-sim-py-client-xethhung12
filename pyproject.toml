@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "prepaid_sim_py_client_xethhung12"
-version = "0.0.1"
+version = "0.0.5"
 authors = [
   { name="Xeth", email="admin@xethh.me" },
 ]
